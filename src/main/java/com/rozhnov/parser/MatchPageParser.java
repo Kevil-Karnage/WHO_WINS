@@ -2,7 +2,6 @@ package com.rozhnov.parser;
 
 import com.rozhnov.who_wins.entity.Match;
 import com.rozhnov.who_wins.entity.Team;
-import com.rozhnov.who_wins.service.EventService;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
