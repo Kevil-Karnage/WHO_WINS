@@ -1,17 +1,19 @@
 package com.rozhnov.who_wins.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
 import java.util.List;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "events")
 public class Event {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -20,7 +22,9 @@ public class Event {
 
     private Date endDate;
 
-    @OneToMany
-    @JoinColumn(name = "match_id")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
     private List<Match> matches;
+
 }

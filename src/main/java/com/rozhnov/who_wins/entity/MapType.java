@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.util.List;
 
@@ -12,16 +14,17 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Team {
+public class MapType {
     @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
 
-    private String logoURL;
+    private boolean actual;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teamId")
-    private List<Match> matches;
+    @JoinColumn(name = "mapTypeId")
+    private List<Map> maps;
 }
