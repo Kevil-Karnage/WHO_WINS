@@ -1,7 +1,7 @@
 package com.rozhnov.who_wins.controller;
 
 import com.rozhnov.parser.DataParsing;
-import com.rozhnov.parser.ParsingInfo;
+import com.rozhnov.parser.info.ParsingInfo;
 import com.rozhnov.who_wins.entity.*;
 import com.rozhnov.who_wins.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +47,17 @@ public class ParseController {
 
         saveAll(parsing.result);
         return new ResponseEntity<>(parsing, HttpStatus.OK);
+    }
+    
+    @GetMapping("/results/{from}/{to}")
+    public ResponseEntity<ParsingInfo<Match>> addResults(@PathVariable int from, @PathVariable int to) {
+        try {
+            ParsingInfo<Match> parsing = dataParsing.parseResultsOf(from, to);
+            return new ResponseEntity<>(parsing, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping("/results/today")
