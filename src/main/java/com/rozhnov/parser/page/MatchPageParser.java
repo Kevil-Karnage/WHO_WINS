@@ -39,10 +39,10 @@ public class MatchPageParser {
 
     private static void convertLinksElementsToMatch(ParsingInfo<Match> parsing, Elements matchLinks,
                                                     boolean ended, int from, int to) {
-        Match match = new Match();
-        match.setEnded(ended);
-
         for (int i = from; i < to; i++) {
+            Match match = new Match();
+            match.setEnded(ended);
+
             Element linkElement = matchLinks.get(i);
             String link = getLinkFromHref(linkElement, "a");
 
