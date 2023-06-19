@@ -20,16 +20,9 @@ public class Map {
     int score1;
     int score2;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "map")
-    List<PlayerStats> playerStats1;
-    @JsonIgnore
-    @OneToMany(mappedBy = "map")
-    List<PlayerStats> playerStats2;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Match match;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private MapType type;
 
 
@@ -38,4 +31,14 @@ public class Map {
     private double points12; // очки 1 команды за 2 половину
     private double points21; // очки 2 команды за 1 половину
     private double points22; // очки 2 команды за 2 половину
+
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "map_id")
+    List<PlayerStats> playerStats1;
+
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "map_id")
+    List<PlayerStats> playerStats2;
 }

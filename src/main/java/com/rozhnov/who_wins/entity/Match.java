@@ -37,7 +37,7 @@ public class Match {
     private int hltvPos2;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "map_id")
+    @OneToMany
+    @JoinColumn(name = "match_id")
     private List<Map> maps;
 }
