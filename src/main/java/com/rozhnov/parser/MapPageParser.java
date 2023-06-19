@@ -57,7 +57,7 @@ public class MapPageParser {
     }
 
 
-    private static Map parsePlayersStats(Element mapElement, Map map) {
+    private static Map parsePlayersStats(Element mapElement, Map map) throws MapPageParserException {
         // получаем таблицу стат игроков
         Elements statsTableElement = mapElement.select("table.totalstats");
         // получаем содержимое списков стат и сохраняем в словари
@@ -68,7 +68,7 @@ public class MapPageParser {
     }
 
     private static List<PlayerStats> parseTeamPlayersStats(Elements teamStatsElements,
-                                                           boolean first, Map map) {
+                                                           boolean first, Map map) throws MapPageParserException {
         Element teamStats = teamStatsElements.get(first ? 0 : 1);
         List<PlayerStats> playerStatsList = new ArrayList<>();
 
@@ -76,33 +76,37 @@ public class MapPageParser {
         Elements playersStatsElements = teamStats.select("tr");
         // перебираем игроков
         for (int i = 1; i < playersStatsElements.size(); i++) {
-            // получаем текущего игрока
-            Element currentPlayerElement = playersStatsElements.get(i);
-            Player player = convertElementToPlayer(currentPlayerElement);
+            try {
+                // получаем текущего игрока
+                Element currentPlayerElement = playersStatsElements.get(i);
+                Player player = convertElementToPlayer(currentPlayerElement);
 
-            // собираем его данные и сохраняем её
+                // собираем его данные и сохраняем её
 
-            PlayerStats playerStats = new PlayerStats();
-            playerStats.setPlayer(player);
-            playerStats.setMap(map);
+                PlayerStats playerStats = new PlayerStats();
+                playerStats.setPlayer(player);
+                playerStats.setMap(map);
 
-            int countRounds = map.getScore1() + map.getScore2();
-            String[] killsString = currentPlayerElement.select("td.st-kills").text().split(" ");
-            playerStats.setKpr(Double.parseDouble(killsString[0]) / countRounds);
-            double deaths = Integer.parseInt(currentPlayerElement.select("td.st-deaths").text());
-            playerStats.setDpr(deaths / countRounds);
+                int countRounds = map.getScore1() + map.getScore2();
+                String[] killsString = currentPlayerElement.select("td.st-kills").text().split(" ");
+                playerStats.setKpr(Double.parseDouble(killsString[0]) / countRounds);
+                double deaths = Integer.parseInt(currentPlayerElement.select("td.st-deaths").text());
+                playerStats.setDpr(deaths / countRounds);
 
-            double adr = Double.parseDouble(currentPlayerElement.select("td.st-adr").text());
-            playerStats.setAdr(adr);
+                double adr = Double.parseDouble(currentPlayerElement.select("td.st-adr").text());
+                playerStats.setAdr(adr);
 
-            double kast = Double.parseDouble(
-                    currentPlayerElement.select("td.st-kdratio").text().split("%")[0]);
-            playerStats.setKast(kast);
+                double kast = Double.parseDouble(
+                        currentPlayerElement.select("td.st-kdratio").text().split("%")[0]);
+                playerStats.setKast(kast);
 
-            double rating2 = Double.parseDouble(currentPlayerElement.select("td.st-rating").text());
-            playerStats.setRating2(rating2);
+                double rating2 = Double.parseDouble(currentPlayerElement.select("td.st-rating").text());
+                playerStats.setRating2(rating2);
 
-            playerStatsList.add(playerStats);
+                playerStatsList.add(playerStats);
+            } catch (Exception e) {
+                throw new MapPageParserException("Ошибка в данных статистики");
+            }
         }
         return playerStatsList;
     }

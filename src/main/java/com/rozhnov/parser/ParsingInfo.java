@@ -9,12 +9,13 @@ import java.util.List;
 public class ParsingInfo<T> {
     public int found;
     public int parsed;
-    public int failed;
+    public List<Long> failed;
     public int alreadyAdded;
     public List<T> result;
 
     public ParsingInfo() {
         result = new ArrayList<>();
+        failed = new ArrayList<>();
     }
 
     public void add(T element) {

@@ -63,7 +63,7 @@ public class MatchPageParser {
                 // получаем сыгранные в матче карты
                 MapPageParser.parseMaps(doc, match);
             } catch (MatchPageParserException | MapPageParserException | EventPageParserException e ) {
-                parsing.failed++;
+                parsing.failed.add(match.getId());
                 continue;
             }
 

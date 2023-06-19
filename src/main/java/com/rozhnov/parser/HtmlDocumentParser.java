@@ -5,26 +5,25 @@ import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchWindowException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class HtmlDocumentParser {
     private static final String hostBase = "https://hltv.org%s";
 
-    private static int countConnections = 0;
+    private static WebDriver driver;
+    private static int countCloses = 0;
 
+    static ChromeOptions options = new ChromeOptions();
 
     /**
      * parse html document to Document.java
-     *
      * @param link
      * @return
      */
     public static Document getHTMLDocument(String link, String checkElementString) {
-        Document doc = getHTMLDocumentSelenium(link, checkElementString, true);
+        Document doc = getHTMLDocumentSelenium(link, checkElementString);
         if (doc == null) {
             System.out.println("Selenium не справился");
             doc = getHTMLDocumentJSoup(link);
@@ -33,34 +32,99 @@ public class HtmlDocumentParser {
         return doc;
     }
 
-    public static Document getHTMLDocumentSelenium(String link, String checkElementString, boolean close) {
-        //System.setProperty("webdriver.chrome.driver", "selenium\\chromedriver.exe");
-        try {
-            WebDriver webDriver = new ChromeDriver();
-            webDriver.get(link);
+    public static Document getHTMLDocumentSelenium(String link, String checkElementString)  {
+        while (true) {
+            System.out.println("\u001B[34m" + link + "\u001B[0m");
+            initOptions();
+            driver = new ChromeDriver(options);
 
-            By cookies_accept = By.xpath("//button[@class='CybotCookiebotDialogBodyButton']");
-            WebElement element = webDriver.findElement(cookies_accept);
-            element.click();
-            randomSleepSize();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--disable-blink-features=AutomationControlled");
 
-            String pageSource = webDriver.getPageSource();
-            Document doc = Jsoup.parse(pageSource);
-            if (doc.select(checkElementString).size() == 0) {
-                throw new NoSuchWindowException("catch CloudFlare");
+            // пытаемся открыть ссылку
+            try {
+                driver.get(link);
+            } catch (TimeoutException e) {
+                driver.quit();
+                continue;
             }
 
-            if (close) webDriver.close();
-            return doc;
-        } catch (Exception e) {
-            return getHTMLDocumentSelenium(link, checkElementString, close);
+            randomSleepSize();
+
+            boolean notFoundCloudFlare = false;
+
+            WebElement element = null;
+            try {
+                By cloudFlareAccept = By.xpath("//input[@class='checkbox']");
+                element = driver.findElement(cloudFlareAccept);
+            } catch (NoSuchElementException e) {
+                // если элемент не нашли, то всё гуд
+                notFoundCloudFlare = true;
+            }
+
+            if (!notFoundCloudFlare) {
+                // если же нашли
+                System.out.println("\u001B[34m CloudFlare нашёл нас... \u001B[0m");
+                // жмём на подтверждение, что мы люди
+                element.click();
+                shortSleep();
+            }
+
+
+            acceptCookie(driver);
+            String pageSource = driver.getPageSource();
+            endDriver();
+
+            Document doc = Jsoup.parse(pageSource);
+            if (doc.select(checkElementString).size() != 0) {
+                return doc;
+            }
         }
+    }
+
+    private static void endDriver() {
+        if (countCloses % 10 == 9) {
+            driver.close();
+        }
+        driver.quit();
+        countCloses++;
+    }
+
+    private static void initOptions() {
+        options.addArguments("enable-automation");
+        //options.addArguments("--headless");
+        options.addArguments("--window-size=100,400");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--dns-prefetch-disable");
+        options.addArguments("--disable-gpu");
+        options.addArguments("start-maximized");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-browser-side-navigation");
+        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+    }
+
+    private static void acceptCookie(WebDriver driver) {
+        WebElement element;
+        By cookies_accept = By.xpath("//button[@class='CybotCookiebotDialogBodyButton']");
+
+        while (true) {
+            try {
+                shortSleep();
+                element = driver.findElement(cookies_accept);
+                break;
+            } catch (NoSuchElementException e) {
+                shortSleep();
+            }
+        }
+
+        shortSleep();
+        element.click();
     }
 
     public static Document getHTMLDocumentJSoup(String link) {
         Document doc = null;
         while (doc == null) {
-            countConnections++;
             try {
                 randomSleepSize();
                 String userAgent = RandomUserAgent.getRandomUserAgent();
@@ -84,16 +148,19 @@ public class HtmlDocumentParser {
         return doc;
     }
 
+    private static void shortSleep() {
+        try {
+            Thread.sleep( 10 + (int) (50 * Math.random()));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static void randomSleepSize() {
         try {
-            if (countConnections % 10 == 9) {
-                Thread.sleep(10000);
-                System.out.println("Сайту нужен отдых, 10 секунд перерыва");
-            } else {
-                int sleepSize = (int) (1000 + 1500 * Math.random());
+                int sleepSize = (int) (150 + 225 * Math.random());
                 System.out.println("Ожидание " + sleepSize);
                 Thread.sleep(sleepSize);
-            }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
