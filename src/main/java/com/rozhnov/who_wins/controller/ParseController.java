@@ -45,7 +45,7 @@ public class ParseController {
     public ResponseEntity<ParsingInfo<Match>> fillDB(@PathVariable int count) {
         ParsingInfo<Match> parsing = dataParsing.parseResults(count);
 
-        saveAll(parsing.result);
+        saveAll(parsing.getResult());
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
     
