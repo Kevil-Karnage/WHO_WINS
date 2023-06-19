@@ -88,11 +88,11 @@ public class MapPageParser {
                 playerStats.setPlayer(player);
                 playerStats.setMap(map);
 
-                int countRounds = map.getScore1() + map.getScore2();
                 String[] killsString = currentPlayerElement.select("td.st-kills").text().split(" ");
-                playerStats.setKpr(Double.parseDouble(killsString[0]) / countRounds);
+                playerStats.setKills(Double.parseDouble(killsString[0]));
+
                 double deaths = Integer.parseInt(currentPlayerElement.select("td.st-deaths").text());
-                playerStats.setDpr(deaths / countRounds);
+                playerStats.setDeaths(deaths);
 
                 double adr = Double.parseDouble(currentPlayerElement.select("td.st-adr").text());
                 playerStats.setAdr(adr);

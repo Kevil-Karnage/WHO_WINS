@@ -19,9 +19,9 @@ public class PlayerStats {
     @ManyToOne(fetch = FetchType.LAZY)
     private Map map;
 
-    private double kpr;
+    private double kills;
 
-    private double dpr;
+    private double deaths;
 
     private double adr;
 
