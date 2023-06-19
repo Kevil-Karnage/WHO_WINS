@@ -1,6 +1,7 @@
 package com.rozhnov.parser.page;
 
 import com.rozhnov.parser.HtmlDocumentParser;
+import com.rozhnov.who_wins.config.BaseException;
 import com.rozhnov.who_wins.entity.Event;
 import com.rozhnov.who_wins.entity.Match;
 import org.jsoup.nodes.Document;
@@ -54,10 +55,8 @@ public class EventPageParser {
     }
 }
 
-class EventPageParserException extends Exception {
-    String describe;
-
-    public EventPageParserException(String describe) {
-        this.describe = describe;
+class EventPageParserException extends BaseException {
+    public EventPageParserException(String description) {
+        super("EventPageParserException", description);
     }
 }

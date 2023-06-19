@@ -1,5 +1,6 @@
 package com.rozhnov.parser.page;
 
+import com.rozhnov.who_wins.config.BaseException;
 import com.rozhnov.who_wins.entity.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -220,10 +221,8 @@ public class MapPageParser {
     }
 }
 
-class MapPageParserException extends Exception {
-    String describe;
-
-    public MapPageParserException(String describe) {
-        this.describe = describe;
+class MapPageParserException extends BaseException {
+    public MapPageParserException(String description) {
+        super("MapPageParserException", description);
     }
 }

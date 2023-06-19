@@ -1,6 +1,7 @@
 package com.rozhnov.parser.page;
 
-import com.rozhnov.parser.*;
+import com.rozhnov.parser.info.*;
+import com.rozhnov.who_wins.config.BaseException;
 import com.rozhnov.who_wins.entity.Match;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,11 +56,8 @@ public class MatchPageParser {
 
                 // получаем сыгранные в матче карты
                 MapPageParser.parseMaps(doc, match);
-            } catch (MatchPageParserException
-                     | MapPageParserException
-                     | EventPageParserException
-                     | TeamPageParserException e) {
-                parsing.failed.add(match.getId());
+            } catch (BaseException e) {
+                parsing.failed.add(new FailedParsing(match.getId(), e));
                 continue;
             }
 
@@ -74,7 +72,7 @@ public class MatchPageParser {
     }
 
 
-    private static Document getInfoFromMatchLink(Match match, String matchLink) throws MatchPageParserException, EventPageParserException {
+    private static Document getInfoFromMatchLink(Match match, String matchLink) throws BaseException {
         // получаем содержимое ссылки
         Document doc = getHTMLDocument(matchLink, "div.teambox");
 
@@ -114,10 +112,9 @@ public class MatchPageParser {
     }
 }
 
-class MatchPageParserException extends Exception {
-    String describe;
 
-    public MatchPageParserException(String describe) {
-        this.describe = describe;
+class MatchPageParserException extends BaseException {
+    public MatchPageParserException(String description) {
+        super("MatchPageParserException", description);
     }
 }
