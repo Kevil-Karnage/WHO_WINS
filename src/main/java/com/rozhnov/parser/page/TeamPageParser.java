@@ -1,5 +1,6 @@
 package com.rozhnov.parser.page;
 
+import com.rozhnov.who_wins.config.BaseException;
 import com.rozhnov.who_wins.entity.Match;
 import com.rozhnov.who_wins.entity.Team;
 import org.jsoup.nodes.Document;
@@ -50,10 +51,8 @@ public class TeamPageParser {
     }
 }
 
-class TeamPageParserException extends Exception {
-    String description;
-
+class TeamPageParserException extends BaseException {
     public TeamPageParserException(String description) {
-        this.description = description;
+        super("TeamPageParserException", description);
     }
 }

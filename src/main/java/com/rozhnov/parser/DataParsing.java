@@ -1,6 +1,8 @@
 package com.rozhnov.parser;
 
+import com.rozhnov.parser.info.ParsingInfo;
 import com.rozhnov.parser.page.MatchPageParser;
+import com.rozhnov.who_wins.config.BaseException;
 import com.rozhnov.who_wins.entity.Match;
 
 public class DataParsing {
@@ -22,12 +24,41 @@ public class DataParsing {
         // парсим полные страницы (на каждой по 100)
         int countFullPages = countResults / 100;
         for (int i = 0; i < countFullPages; i++) {
-            parsing = MatchPageParser.parseFullPageOfResults(parsing, link + (i * 100), count);
+            MatchPageParser.parseFullPageOfResults(parsing, link + (i * 100));
         }
 
         // парсим неполную страницу (последнюю)
         int countResultsOnLastPage = countResults % 100;
-        parsing = MatchPageParser.parsePageOfResults(parsing, link + countFullPages * 100, countResultsOnLastPage, count);
+        MatchPageParser.parsePageOfResults(parsing, link + countFullPages * 100, countResultsOnLastPage);
+
+        return parsing;
+    }
+
+    public ParsingInfo<Match> parseResultsOf(int from, int to) throws DataParsingException {
+        if (from > to)
+            throw new DataParsingException("Некорректные ограничения: to > from");
+
+        ParsingInfo<Match> parsing = new ParsingInfo<>();
+
+        int firstPage = from / 100;
+        int lastPage = to / 100;
+
+        if (firstPage == lastPage) {
+            MatchPageParser.parsePageOfResultsOf(parsing, link + (firstPage * 100), from, to);
+        } else {
+            // первая страница (неполная)
+            MatchPageParser.parsePageOfResultsOf(parsing, link + (firstPage * 100), from, 100);
+
+            // полные страницы
+            for (int i = firstPage + 1; i < lastPage; i++) {
+                MatchPageParser.parseFullPageOfResults(parsing, link + (i * 100));
+            }
+
+            // последняя страница (неполная)
+            int countOnLastPage = to - (lastPage * 100);
+            MatchPageParser.parsePageOfResults(parsing, link + (lastPage * 100), countOnLastPage);
+        }
+
         return parsing;
     }
 
@@ -45,5 +76,11 @@ public class DataParsing {
     public ParsingInfo<Match> parseTodayMatches() {
         // запись сегодняшних матчей (возможно матчей за ближайшие сутки)
         return new ParsingInfo<>();
+    }
+}
+
+class DataParsingException extends BaseException {
+    public DataParsingException(String description) {
+        super("DataParsingException", description);
     }
 }
