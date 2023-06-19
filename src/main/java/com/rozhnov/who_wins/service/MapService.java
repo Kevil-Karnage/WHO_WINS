@@ -1,6 +1,5 @@
 package com.rozhnov.who_wins.service;
 
-import com.rozhnov.who_wins.entity.Event;
 import com.rozhnov.who_wins.entity.Map;
 import com.rozhnov.who_wins.repository.MapRepository;
 import org.springframework.beans.factory.annotation.Autowired;
