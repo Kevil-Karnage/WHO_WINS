@@ -1,5 +1,6 @@
-package com.rozhnov.parser;
+package com.rozhnov.parser.page;
 
+import com.rozhnov.parser.HtmlDocumentParser;
 import com.rozhnov.who_wins.entity.Event;
 import com.rozhnov.who_wins.entity.Match;
 import org.jsoup.nodes.Document;

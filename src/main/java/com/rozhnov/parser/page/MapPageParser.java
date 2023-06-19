@@ -1,4 +1,4 @@
-package com.rozhnov.parser;
+package com.rozhnov.parser.page;
 
 import com.rozhnov.who_wins.entity.*;
 import org.jsoup.nodes.Document;
