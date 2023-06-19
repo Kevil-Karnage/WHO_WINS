@@ -1,12 +1,11 @@
 package com.rozhnov.parser;
 
+import com.rozhnov.parser.page.MatchPageParser;
 import com.rozhnov.who_wins.entity.Match;
 
 public class DataParsing {
 
     private static final String link = "https://www.hltv.org/results?offset=";
-    MatchPageParser parser = new MatchPageParser();
-
     public void checkResultsUpdates() {
         // проверяем наличие новых результатов
     }
@@ -17,12 +16,12 @@ public class DataParsing {
         // парсим полные страницы (на каждой по 100)
         int countFullPages = countResults / 100;
         for (int i = 0; i < countFullPages; i++) {
-            parsing = parser.parseFullPageOfResults(parsing, link + (i * 100), count);
+            parsing = MatchPageParser.parseFullPageOfResults(parsing, link + (i * 100), count);
         }
 
         // парсим неполную страницу (последнюю)
         int countResultsOnLastPage = countResults % 100;
-        parsing = parser.parsePageOfResults(parsing, link + countFullPages * 100, countResultsOnLastPage, count);
+        parsing = MatchPageParser.parsePageOfResults(parsing, link + countFullPages * 100, countResultsOnLastPage, count);
         return parsing;
     }
 
