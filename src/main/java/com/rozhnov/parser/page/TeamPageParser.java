@@ -42,7 +42,7 @@ public class TeamPageParser {
     }
 
     private static String getLogoUrl(Element teamElement) {
-        String logoUrl = teamElement.select("img").attr("src");
+        String logoUrl = teamElement.select("img.logo").attr("src");
 
         if (logoUrl.contains("placeholder.svg"))
             return defaultLogoUrl;
