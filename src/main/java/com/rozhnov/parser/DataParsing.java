@@ -10,6 +10,12 @@ public class DataParsing {
         // проверяем наличие новых результатов
     }
 
+
+    /**
+     * сбор информации о последних результатах
+     * @param countResults количество матчей
+     * @return
+     */
     public ParsingInfo<Match> parseResults(int countResults) {
         ParsingInfo<Match> parsing = new ParsingInfo<>();
         int count = 0;
