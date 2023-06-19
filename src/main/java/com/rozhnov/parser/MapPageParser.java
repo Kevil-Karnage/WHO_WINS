@@ -111,25 +111,15 @@ public class MapPageParser {
         return playerStatsList;
     }
 
-    private static Player convertElementToPlayer(Element playerstatsElement) {
+    private static Player convertElementToPlayer(Element playerStatsElement) {
         Player player = new Player();
 
-        Element playerElement = playerstatsElement.select("td.st-player").get(0);
+        Element playerElement = playerStatsElement.select("td.st-player").get(0);
         String[] playerLink = playerElement.select("a").attr("href").split("/");
 
         player.setId(Long.parseLong(playerLink[3]));
+        player.setNickname(playerElement.text());
 
-        String fullName = playerElement.text();
-
-        String[] names = fullName.split(" '");
-        if (names.length > 1) {
-            player.setName(names[0]);
-            names = names[1].split("' ");
-            player.setNickname(names[0]);
-            player.setSurname(names[1]);
-        } else {
-            player.setNickname(names[0]);
-        }
         return player;
     }
 

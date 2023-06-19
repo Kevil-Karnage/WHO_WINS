@@ -23,6 +23,6 @@ public class MapType {
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mapTypeId")
+    @JoinColumn(name = "type_id")
     private List<Map> maps;
 }

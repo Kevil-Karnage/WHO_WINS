@@ -3,6 +3,7 @@ package com.rozhnov.who_wins.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,10 @@ public class Player {
     @Id
     private Long id;
 
-    private String name;
-
     private String nickname;
 
-    private String surname;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "player")
+    @OneToMany
+    @JoinColumn(name = "player_id")
     List<PlayerStats> playerStats;
 }
