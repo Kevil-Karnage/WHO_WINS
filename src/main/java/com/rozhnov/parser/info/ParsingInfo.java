@@ -9,9 +9,9 @@ import java.util.List;
 public class ParsingInfo<T> {
     public int found;
     public int parsed;
-    public List<FailedParsing> failed;
+    private List<FailedParsing> failed;
     public int alreadyAdded;
-    public List<T> result;
+    private List<T> result;
 
     public ParsingInfo() {
         result = new ArrayList<>();
@@ -20,6 +20,10 @@ public class ParsingInfo<T> {
 
     public void add(T element) {
         result.add(element);
+    }
+
+    public void addFail(Long id, String description) {
+        failed.add(new FailedParsing(id, description));
     }
 
     @Override

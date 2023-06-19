@@ -34,7 +34,7 @@ public class MatchPageParser {
         Elements linksElements = pageResultsElement.select("a.a-reset");
 
         convertLinksElementsToMatch(parsing, linksElements, true, from, to);
-        parsing.found = parsing.result.size() + parsing.failed.size();
+        parsing.found = parsing.getResult().size() + parsing.getFailed().size();
     }
 
     private static void convertLinksElementsToMatch(ParsingInfo<Match> parsing, Elements matchLinks,
@@ -57,7 +57,7 @@ public class MatchPageParser {
                 // получаем сыгранные в матче карты
                 MapPageParser.parseMaps(doc, match);
             } catch (BaseException e) {
-                parsing.failed.add(new FailedParsing(match.getId(), e));
+                parsing.addFail(match.getId(), e.getDescription());
                 continue;
             }
 
@@ -67,7 +67,7 @@ public class MatchPageParser {
             match.setType((matchType + 1) % 2);
             parsing.add(match);
 
-            System.out.println("\u001B[34mМатч №" + parsing.result.size() + "\u001B[0m");
+            System.out.println("\u001B[34mМатч №" + parsing.getResult().size() + "\u001B[0m");
         }
     }
 
