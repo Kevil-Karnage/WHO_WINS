@@ -14,36 +14,34 @@ import static com.rozhnov.parser.HtmlDocumentParser.getLinkFromHref;
 
 public class MatchPageParser {
 
-    public static ParsingInfo<Match> parseFullPageOfResults(ParsingInfo<Match> parsing, String link, int count) {
-        return parsePageOfResults(parsing, link, 100, count);
+    public static void parseFullPageOfResults(ParsingInfo<Match> parsing, String link) {
+        parsePageOfResultsOf(parsing, link, 0, 100);
     }
 
-    public static ParsingInfo<Match> parsePageOfResults(ParsingInfo<Match> parsing,
-                                          String link, int resultsCount, int count) {
+    public static void parsePageOfResults(ParsingInfo<Match> parsing, String link, int resultsCount) {
+        parsePageOfResultsOf(parsing, link, 0, resultsCount);
+    }
 
+    public static void parsePageOfResultsOf(ParsingInfo<Match> parsing,
+                                                        String link, int from, int to) {
         Document doc = getHTMLDocument(link, "div.allres");
         Elements allResElement = doc.select("div.allres");
-        while (allResElement.size() == 0) {
-            doc = getHTMLDocument(link, "div.allres");
-            allResElement = doc.select("div.allres");
-        }
+
         Element pageResultsElement = allResElement.get(0);
 
         // элемент ссылок на матчи
         Elements linksElements = pageResultsElement.select("a.a-reset");
 
-        convertLinksElementsToMatch(parsing, linksElements, true, resultsCount, count);
-        parsing.found += resultsCount;
-        return parsing;
+        convertLinksElementsToMatch(parsing, linksElements, true, from, to);
+        parsing.found = parsing.result.size() + parsing.failed.size();
     }
 
     private static void convertLinksElementsToMatch(ParsingInfo<Match> parsing, Elements matchLinks,
-                                                    boolean ended, int resultsCount, int countParsed) {
+                                                    boolean ended, int from, int to) {
         Match match = new Match();
         match.setEnded(ended);
 
-        int count = Integer.min(matchLinks.size(), resultsCount);
-        for (int i = 0; i < count; i++) {
+        for (int i = from; i < to; i++) {
             Element linkElement = matchLinks.get(i);
             String link = getLinkFromHref(linkElement, "a");
 
@@ -71,9 +69,7 @@ public class MatchPageParser {
             match.setType((matchType + 1) % 2);
             parsing.add(match);
 
-            countParsed++;
-
-            System.out.println("\u001B[34mМатч №" + countParsed + "\u001B[0m");
+            System.out.println("\u001B[34mМатч №" + parsing.result.size() + "\u001B[0m");
         }
     }
 
