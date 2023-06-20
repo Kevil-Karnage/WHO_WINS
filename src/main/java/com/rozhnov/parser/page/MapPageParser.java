@@ -136,8 +136,7 @@ public class MapPageParser {
             throw new MapPageParserException("Нет очков карты");
         }
         String image11 = e1.get(0).attr("src");
-        String image21 = e2.get(0).attr("src");
-        map.setDefence1( !(isTWin(image11) || isCTWin(image21)) );
+        map.setDefence1( isCTSide(image11));
 
         double rounds1 = 0;
         double rounds2 = 0;
@@ -152,24 +151,32 @@ public class MapPageParser {
             if (map.isDefence1()) {
                 if (isCTWin(imgPath1)) {
                     rounds1++;
-                    if (isTSave(imgPath1)) saves2++;
+
+                    if (isTSave(imgPath1))
+                        saves2++;
                 } else {
                     rounds2++;
-                    if (isCTSave(imgPath2)) saves1++;
+
+                    if (isCTSave(imgPath2))
+                        saves1++;
                 }
             } else {
                 if (isTWin(imgPath1)) {
                     rounds1++;
-                    if (isCTSave(imgPath1)) saves2++;
+
+                    if (isCTSave(imgPath1))
+                        saves2++;
                 } else {
                     rounds2++;
-                    if (isTSave(imgPath2)) saves1++;
+
+                    if (isTSave(imgPath2))
+                        saves1++;
                 }
             }
         }
 
-        map.setPoints11((rounds1 + saves1 / 2) / 15 * 7);
-        map.setPoints21((rounds2 + saves2 / 2) / 15 * 7);
+        map.setPoints11((rounds1 + saves1 / 2) / 15);
+        map.setPoints21((rounds2 + saves2 / 2) / 15);
 
         rounds1 = 0;
         rounds2 = 0;
@@ -200,8 +207,12 @@ public class MapPageParser {
             }
         }
 
-        map.setPoints12((rounds1 + saves1 / 2) / (rounds1 + rounds2) * 7);
-        map.setPoints22((rounds2 + saves2 / 2) / (rounds1 + rounds2) * 7);
+        map.setPoints12((rounds1 + saves1 / 2) / (rounds1 + rounds2));
+        map.setPoints22((rounds2 + saves2 / 2) / (rounds1 + rounds2));
+    }
+
+    private static boolean isCTSide(String imgPath) {
+        return isCTWin(imgPath) || isTSave(imgPath);
     }
 
     private static boolean isTWin(String imgPath) {

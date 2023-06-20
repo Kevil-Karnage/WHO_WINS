@@ -67,8 +67,9 @@ public class MatchPageParser {
             match.setType((matchType + 1) % 2);
             parsing.add(match);
 
-            System.out.println("\u001B[34mМатч №" + parsing.getResult().size() + "\u001B[0m");
+            System.out.println("\u001B[45mМатч №" + parsing.getResult().size() + "\u001B[0m");
         }
+        System.out.println("\u001B[45<--> Все матчи собраны <--> !!!\u001B[0m");
     }
 
 
