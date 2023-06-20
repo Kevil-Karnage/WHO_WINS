@@ -9,6 +9,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.util.Date;
+
 public class HtmlDocumentParser {
     private static final String hostBase = "https://hltv.org%s";
 
@@ -34,7 +36,8 @@ public class HtmlDocumentParser {
 
     public static Document getHTMLDocumentSelenium(String link, String checkElementString)  {
         while (true) {
-            System.out.println("\u001B[34m" + link + "\u001B[0m");
+            Date date = new Date();
+            System.out.println("\u001B[45m Time: " + date + ": " + link + "\u001B[0m");
             initOptions();
             driver = new ChromeDriver(options);
 
@@ -64,7 +67,7 @@ public class HtmlDocumentParser {
 
             if (!notFoundCloudFlare) {
                 // если же нашли
-                System.out.println("\u001B[34m CloudFlare нашёл нас... \u001B[0m");
+                System.out.println("\u001B[45m CloudFlare нашёл нас... \u001B[0m");
                 // жмём на подтверждение, что мы люди
                 element.click();
                 shortSleep();
@@ -83,11 +86,8 @@ public class HtmlDocumentParser {
     }
 
     private static void endDriver() {
-        if (countCloses % 10 == 9) {
-            driver.close();
-        }
         driver.quit();
-        countCloses++;
+        driver = null;
     }
 
     private static void initOptions() {
@@ -102,6 +102,8 @@ public class HtmlDocumentParser {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-browser-side-navigation");
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+
+        options.addArguments("--disable-blink-features=AutomationControlled");
     }
 
     private static void acceptCookie(WebDriver driver) {
