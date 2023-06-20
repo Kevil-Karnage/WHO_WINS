@@ -1,8 +1,12 @@
 package com.rozhnov.parser.info;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 @AllArgsConstructor
+@Getter
+@Setter
 public class FailedParsing {
     Long matchId;
     String description;
