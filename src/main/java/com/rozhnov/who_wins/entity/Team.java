@@ -1,14 +1,16 @@
 package com.rozhnov.who_wins.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Team {
     @Id
@@ -18,7 +20,8 @@ public class Team {
 
     private String logoURL;
 
-    @OneToMany
-    @JoinColumn(name = "match_id")
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teamId")
     private List<Match> matches;
 }
