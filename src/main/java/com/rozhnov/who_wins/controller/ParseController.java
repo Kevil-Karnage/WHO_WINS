@@ -63,14 +63,15 @@ public class ParseController {
 
     @GetMapping("/results/today")
     public ResponseEntity<ParsingInfo<Match>> addTodayResults() {
-        ParsingInfo<Match> matches = dataParsing.parseTodayResults();
-        return new ResponseEntity<>(matches, HttpStatus.OK);
+        ParsingInfo<Match> parsing = dataParsing.parseTodayResults();
+        saveAll(parsing.getResult());
+        return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
     @GetMapping("/results/yesterday")
     public ResponseEntity<ParsingInfo<Match>> addYesterdayResults() {
-        ParsingInfo<Match> matches = dataParsing.parseYesterdayResults();
-        return new ResponseEntity<>(matches, HttpStatus.OK);
+        ParsingInfo<Match> parsing = dataParsing.parseYesterdayResults();
+        return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
     @GetMapping("/results/")
@@ -81,13 +82,14 @@ public class ParseController {
 
     @GetMapping("/matches/today")
     public ResponseEntity<ParsingInfo<Match>> addTodayMatches() {
-        ParsingInfo<Match> matches = dataParsing.parseTodayMatches();
-        return new ResponseEntity<>(matches, HttpStatus.OK);
+        ParsingInfo<Match> parsing = dataParsing.parseTodayMatches();
+        return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
     private void saveAll(List<Match> matchList) {
         for (Match match : matchList) {
             Event event = match.getEvent();
+            System.out.println("Сохраняется ивент: " + event);
             eventService.save(event);
 
             Team team1 = match.getTeam1();
