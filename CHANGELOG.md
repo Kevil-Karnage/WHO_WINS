@@ -7,6 +7,7 @@
 
 #### Обновлено:
 
+- Упрощён и ускорен процесс получения страниц сайта [hltv.org](https://hltv.org) (**DEVELOP-10**)
 - Вместо kpr и dpr теперь хранятся kills и deaths (**FIX-4**)
 - Стиль ведения CHANGELOG.md (**DEVELOP-6**)
 
