@@ -1,7 +1,5 @@
 package com.rozhnov.parser;
 
-import com.rozhnov.parser.userAgent.RandomUserAgent;
-import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,9 +12,11 @@ import java.util.Date;
 public class HtmlDocumentParser {
     private static final String hostBase = "https://hltv.org%s";
 
-    private static WebDriver driver;
-    private static int countCloses = 0;
+    private static ChromeDriver driver;
+    static String chromeDriverPath = "C:/Users/levro/Desktop/WHO_WINS/selenium/chromedriver.exe";
 
+     static int countConnections;
+    
     static ChromeOptions options = new ChromeOptions();
 
     /**
@@ -24,35 +24,28 @@ public class HtmlDocumentParser {
      * @param link
      * @return
      */
-    public static Document getHTMLDocument(String link, String checkElementString) {
-        Document doc = getHTMLDocumentSelenium(link, checkElementString);
-        if (doc == null) {
-            System.out.println("Selenium не справился");
-            doc = getHTMLDocumentJSoup(link);
-        }
-
-        return doc;
-    }
-
-    public static Document getHTMLDocumentSelenium(String link, String checkElementString)  {
+    public static Document getHTMLDocument(String link, String checkElementString)  {
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         while (true) {
+            countConnections++;
+            if (countConnections % 50 == 0) {
+                try {
+                    System.out.println("Перерыв 10 секунд");
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             Date date = new Date();
             System.out.println("\u001B[45m Time: " + date + ": " + link + "\u001B[0m");
             initOptions();
             driver = new ChromeDriver(options);
-
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--disable-blink-features=AutomationControlled");
+            longSleep();
 
             // пытаемся открыть ссылку
-            try {
-                driver.get(link);
-            } catch (TimeoutException e) {
-                driver.quit();
-                continue;
-            }
+            driver.get(link);
 
-            randomSleepSize();
 
             boolean notFoundCloudFlare = false;
 
@@ -88,22 +81,23 @@ public class HtmlDocumentParser {
     private static void endDriver() {
         driver.quit();
         driver = null;
+        System.out.println("Закрываем сайт");
     }
 
     private static void initOptions() {
         options.addArguments("enable-automation");
         //options.addArguments("--headless");
         options.addArguments("--window-size=100,400");
-        options.addArguments("--no-sandbox");
+/*        options.addArguments("--no-sandbox");
         options.addArguments("--disable-extensions");
         options.addArguments("--dns-prefetch-disable");
         options.addArguments("--disable-gpu");
         options.addArguments("start-maximized");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-browser-side-navigation");
-        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+  */      //options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 
-        options.addArguments("--disable-blink-features=AutomationControlled");
+        //options.addArguments("--disable-blink-features=AutomationControlled");
     }
 
     private static void acceptCookie(WebDriver driver) {
@@ -119,35 +113,9 @@ public class HtmlDocumentParser {
                 shortSleep();
             }
         }
-
         shortSleep();
         element.click();
-    }
-
-    public static Document getHTMLDocumentJSoup(String link) {
-        Document doc = null;
-        while (doc == null) {
-            try {
-                randomSleepSize();
-                String userAgent = RandomUserAgent.getRandomUserAgent();
-                System.out.printf("Соединение с %s, userAgent: %s", link, userAgent);
-                doc = Jsoup.connect(link)
-                        .userAgent(userAgent)
-                        .get();
-            } catch (HttpStatusException e) {
-                System.out.println("\n" + e.getStatusCode());
-            } catch (Exception e) {
-                System.out.println("Ошибка, повтор через 5 секунд");
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-        System.out.println("Успешно");
-
-        return doc;
+        System.out.println("Cookie приняты");
     }
 
     private static void shortSleep() {
@@ -158,11 +126,12 @@ public class HtmlDocumentParser {
         }
     }
 
-    private static void randomSleepSize() {
+    private static void longSleep() {
         try {
-                int sleepSize = (int) (150 + 225 * Math.random());
-                System.out.println("Ожидание " + sleepSize);
-                Thread.sleep(sleepSize);
+            int sleepSize = (int) (150 + 225 * Math.random());
+            System.out.println("Ожидание " + sleepSize);
+            Thread.sleep(sleepSize);
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

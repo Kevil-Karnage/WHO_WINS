@@ -40,6 +40,7 @@ public class MatchPageParser {
     private static void convertLinksElementsToMatch(ParsingInfo<Match> parsing, Elements matchLinks,
                                                     boolean ended, int from, int to) {
         for (int i = from; i < to; i++) {
+            System.out.println("Обрабатываем следующий матч");
             Match match = new Match();
             match.setEnded(ended);
 
@@ -53,9 +54,9 @@ public class MatchPageParser {
                 // получаем команды
                 TeamPageParser.parseTeams(doc, match);
 
-
                 // получаем сыгранные в матче карты
                 MapPageParser.parseMaps(doc, match);
+
             } catch (BaseException e) {
                 parsing.addFail(match.getId(), e.getDescription());
                 continue;
@@ -75,7 +76,7 @@ public class MatchPageParser {
 
     private static Document getInfoFromMatchLink(Match match, String matchLink) throws BaseException {
         // получаем содержимое ссылки
-        Document doc = getHTMLDocument(matchLink, "div.teambox");
+        Document doc = getHTMLDocument(matchLink, "div.teamsBox");
 
 
         // получаем id матча на hltv.org
