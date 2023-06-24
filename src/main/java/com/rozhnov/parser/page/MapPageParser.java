@@ -17,6 +17,7 @@ public class MapPageParser {
         Elements mapsElement = doc.select("div.mapholder");
         List<Map> maps = new ArrayList<>();
         for (int i = 0; i < mapsElement.size(); i++) {
+            System.out.println("Собираем следующую карту матча");
             Element mapElement = mapsElement.get(i);
             Map map = new Map();
 

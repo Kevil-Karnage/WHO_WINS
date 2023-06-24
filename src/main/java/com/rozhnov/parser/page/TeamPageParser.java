@@ -14,6 +14,7 @@ public class TeamPageParser {
     private static final String defaultLogoUrl = "https://amiel.club/uploads/posts/2022-03/1647714783_56-amiel-club-p-krestik-kartinki-60.jpg";
     private static final String teamNamePattern = "[^/]*";
     public static void parseTeams(Document matchPage, Match match) throws TeamPageParserException {
+        System.out.println("Получение команд");
         // получаем команды матча
         Elements teamsElement = matchPage.select("div.team");
 
@@ -25,6 +26,7 @@ public class TeamPageParser {
             match.setTeam1(team1);
             match.setTeam2(team2);
         } else {
+            System.out.println("Некорректные названия команд");
             throw new TeamPageParserException("Некорректные названия команд");
         }
     }

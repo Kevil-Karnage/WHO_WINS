@@ -53,6 +53,7 @@ public class ParseController {
     public ResponseEntity<ParsingInfo<Match>> addResults(@PathVariable int from, @PathVariable int to) {
         try {
             ParsingInfo<Match> parsing = dataParsing.parseResultsOf(from, to);
+            saveAll(parsing.getResult());
             return new ResponseEntity<>(parsing, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
