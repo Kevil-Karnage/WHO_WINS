@@ -44,10 +44,10 @@ public class DataParsing {
         int lastPage = to / 100;
 
         if (firstPage == lastPage) {
-            MatchPageParser.parsePageOfResultsOf(parsing, link + (firstPage * 100), from, to);
+            MatchPageParser.parsePageOfResultsOf(parsing, link + (firstPage * 100), from % 100, to % 100);
         } else {
             // первая страница (неполная)
-            MatchPageParser.parsePageOfResultsOf(parsing, link + (firstPage * 100), from, 100);
+            MatchPageParser.parsePageOfResultsOf(parsing, link + (firstPage * 100), from % 100, 100);
 
             // полные страницы
             for (int i = firstPage + 1; i < lastPage; i++) {
@@ -55,8 +55,7 @@ public class DataParsing {
             }
 
             // последняя страница (неполная)
-            int countOnLastPage = to - (lastPage * 100);
-            MatchPageParser.parsePageOfResults(parsing, link + (lastPage * 100), countOnLastPage);
+            MatchPageParser.parsePageOfResults(parsing, link + (lastPage * 100), to % 100);
         }
 
         return parsing;

@@ -137,7 +137,8 @@ public class MapPageParser {
             throw new MapPageParserException("Нет очков карты");
         }
         String image11 = e1.get(0).attr("src");
-        map.setDefence1( isCTSide(image11));
+        String image12 = e2.get(0).attr("src");
+        map.setDefence1(isCTSide(image11, image12));
 
         double rounds1 = 0;
         double rounds2 = 0;
@@ -176,8 +177,10 @@ public class MapPageParser {
             }
         }
 
-        map.setPoints11((rounds1 + saves1 / 2) / 15);
-        map.setPoints21((rounds2 + saves2 / 2) / 15);
+        double points11 = (rounds1 + saves1 / 2) / 15;
+        map.setPoints11(Double.isNaN(points11) ? 0 : points11);
+        double points21 = (rounds2 + saves2 / 2) / 15;
+        map.setPoints21(Double.isNaN(points21) ? 0 : points21);
 
         rounds1 = 0;
         rounds2 = 0;
@@ -208,12 +211,18 @@ public class MapPageParser {
             }
         }
 
-        map.setPoints12((rounds1 + saves1 / 2) / (rounds1 + rounds2));
-        map.setPoints22((rounds2 + saves2 / 2) / (rounds1 + rounds2));
+        double points12 = (rounds1 + saves1 / 2) / (rounds1 + rounds2);
+        map.setPoints12(Double.isNaN(points12) ? 0 : points12);
+        double points22 = (rounds2 + saves2 / 2) / (rounds1 + rounds2);
+        map.setPoints22(Double.isNaN(points22) ? 0 : points22);
     }
 
-    private static boolean isCTSide(String imgPath) {
-        return isCTWin(imgPath) || isTSave(imgPath);
+    private static boolean isCTSide(String imgPath1, String imgPath2) {
+        return isCTWin(imgPath1) || isTWin(imgPath2) ;
+    }
+
+    private static boolean isCTWin(String imgPath) {
+        return imgPath.contains("ct_win") || isTSave(imgPath);
     }
 
     private static boolean isTWin(String imgPath) {
@@ -226,10 +235,6 @@ public class MapPageParser {
 
     private static boolean isCTSave(String imgPath) {
         return imgPath.contains("bomb_exploded");
-    }
-
-    private static boolean isCTWin(String imgPath) {
-        return imgPath.contains("ct_win") || imgPath.contains("stopwatch") || imgPath.contains("bomb_defused");
     }
 }
 
