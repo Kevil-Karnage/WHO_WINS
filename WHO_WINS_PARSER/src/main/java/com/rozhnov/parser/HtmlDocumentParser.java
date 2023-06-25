@@ -13,7 +13,8 @@ public class HtmlDocumentParser {
     private static final String hostBase = "https://hltv.org%s";
 
     private static ChromeDriver driver;
-    static String chromeDriverPath = "C:/Users/levro/Desktop/WHO_WINS/selenium/chromedriver.exe";
+
+    static String chromeDriverPath = "C:/Users/levro/Desktop/WHO_WINS/WHO_WINS_PARSER/selenium/chromedriver.exe";
 
      static int countConnections;
     

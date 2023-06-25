@@ -1,7 +1,7 @@
 package com.rozhnov.parser.page;
 
-import com.rozhnov.who_wins_application.config.BaseException;
-import com.rozhnov.who_wins_application.entity.*;
+import com.rozhnov.who_wins_parser.config.BaseException;
+import com.rozhnov.who_wins_parser.entity.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -87,7 +87,6 @@ public class MapPageParser {
 
                 PlayerStats playerStats = new PlayerStats();
                 playerStats.setPlayer(player);
-                playerStats.setMap(map);
 
                 String[] killsString = currentPlayerElement.select("td.st-kills").text().split(" ");
                 playerStats.setKills(Double.parseDouble(killsString[0]));

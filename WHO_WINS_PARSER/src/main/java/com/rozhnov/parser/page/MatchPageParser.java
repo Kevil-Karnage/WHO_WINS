@@ -2,8 +2,8 @@ package com.rozhnov.parser.page;
 
 import com.rozhnov.parser.HtmlDocumentParser;
 import com.rozhnov.parser.info.ParsingInfo;
-import com.rozhnov.who_wins_application.config.BaseException;
-import com.rozhnov.who_wins_application.entity.Match;
+import com.rozhnov.who_wins_parser.config.BaseException;
+import com.rozhnov.who_wins_parser.entity.Match;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -13,15 +13,15 @@ import java.util.Arrays;
 
 public class MatchPageParser {
 
-    public static void parseFullPageOfResults(ParsingInfo<Match> parsing, String link) {
+    public static void parseFullPageOfResults(ParsingInfo parsing, String link) {
         parsePageOfResultsOf(parsing, link, 0, 100);
     }
 
-    public static void parsePageOfResults(ParsingInfo<Match> parsing, String link, int resultsCount) {
+    public static void parsePageOfResults(ParsingInfo parsing, String link, int resultsCount) {
         parsePageOfResultsOf(parsing, link, 0, resultsCount);
     }
 
-    public static void parsePageOfResultsOf(ParsingInfo<Match> parsing,
+    public static void parsePageOfResultsOf(ParsingInfo parsing,
                                                         String link, int from, int to) {
         Document doc = HtmlDocumentParser.getHTMLDocument(link, "div.allres");
         Elements allResElement = doc.select("div.allres");
@@ -35,7 +35,7 @@ public class MatchPageParser {
         parsing.found = parsing.getResult().size() + parsing.getFailed().size();
     }
 
-    public static void parseResultsByDay(ParsingInfo<Match> parsing, String link, int dayNumber) {
+    public static void parseResultsByDay(ParsingInfo parsing, String link, int dayNumber) {
         Document doc = HtmlDocumentParser.getHTMLDocument(link, "div.allres");
 
         Elements allResElement = doc.select("div.allres");
@@ -54,7 +54,7 @@ public class MatchPageParser {
         parsing.found = parsing.getResult().size() + parsing.getFailed().size();
     }
 
-    private static void convertLinksElementsToMatch(ParsingInfo<Match> parsing, Elements matchLinks,
+    private static void convertLinksElementsToMatch(ParsingInfo parsing, Elements matchLinks,
                                                     boolean ended, int from, int to) {
         for (int i = from; i < to; i++) {
             System.out.println("Обрабатываем следующий матч");

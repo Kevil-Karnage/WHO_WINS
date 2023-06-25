@@ -1,7 +1,6 @@
 package com.rozhnov.parser;
 
-import com.rozhnov.who_wins_application.config.BaseException;
-import com.rozhnov.who_wins_application.entity.Match;
+import com.rozhnov.who_wins_parser.config.BaseException;
 import com.rozhnov.parser.info.ParsingInfo;
 import com.rozhnov.parser.page.MatchPageParser;
 
@@ -18,8 +17,8 @@ public class DataParsing {
      * @param countResults количество матчей
      * @return
      */
-    public ParsingInfo<Match> parseResults(int countResults) {
-        ParsingInfo<Match> parsing = new ParsingInfo<>();
+    public ParsingInfo parseResults(int countResults) {
+        ParsingInfo parsing = new ParsingInfo();
         int count = 0;
         // парсим полные страницы (на каждой по 100)
         int countFullPages = countResults / 100;
@@ -34,11 +33,11 @@ public class DataParsing {
         return parsing;
     }
 
-    public ParsingInfo<Match> parseResultsOf(int from, int to) throws DataParsingException {
+    public ParsingInfo parseResultsOf(int from, int to) throws DataParsingException {
         if (from > to)
             throw new DataParsingException("Некорректные ограничения: to > from");
 
-        ParsingInfo<Match> parsing = new ParsingInfo<>();
+        ParsingInfo parsing = new ParsingInfo();
 
         int firstPage = from / 100;
         int lastPage = to / 100;
@@ -61,16 +60,16 @@ public class DataParsing {
         return parsing;
     }
 
-    public ParsingInfo<Match> parseTodayResults() {
-        ParsingInfo<Match> parsing = new ParsingInfo<>();
+    public ParsingInfo parseTodayResults() {
+        ParsingInfo parsing = new ParsingInfo();
 
         MatchPageParser.parseResultsByDay(parsing, link + 0, 0);
 
         return parsing;
     }
 
-    public ParsingInfo<Match> parseYesterdayResults() {
-        ParsingInfo<Match> parsing = new ParsingInfo<>();
+    public ParsingInfo parseYesterdayResults() {
+        ParsingInfo parsing = new ParsingInfo();
 
         MatchPageParser.parseResultsByDay(parsing, link + 0, 1);
 
@@ -78,9 +77,9 @@ public class DataParsing {
     }
 
 
-    public ParsingInfo<Match> parseTodayMatches() {
+    public ParsingInfo parseTodayMatches() {
         // запись сегодняшних матчей (возможно матчей за ближайшие сутки)
-        return new ParsingInfo<>();
+        return new ParsingInfo();
     }
 }
 

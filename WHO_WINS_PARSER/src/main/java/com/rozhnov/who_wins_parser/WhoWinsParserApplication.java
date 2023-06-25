@@ -1,4 +1,4 @@
-package com.rozhnov.parser.who_wins_parser;
+package com.rozhnov.who_wins_parser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

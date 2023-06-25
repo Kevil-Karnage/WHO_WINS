@@ -1,4 +1,4 @@
-package com.rozhnov.parser.who_wins_parser;
+package com.rozhnov.who_wins_parser;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

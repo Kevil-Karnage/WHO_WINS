@@ -1,8 +1,8 @@
 package com.rozhnov.parser.page;
 
-import com.rozhnov.who_wins_application.config.BaseException;
-import com.rozhnov.who_wins_application.entity.Event;
-import com.rozhnov.who_wins_application.entity.Match;
+import com.rozhnov.who_wins_parser.config.BaseException;
+import com.rozhnov.who_wins_parser.entity.Event;
+import com.rozhnov.who_wins_parser.entity.Match;
 import com.rozhnov.parser.HtmlDocumentParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
