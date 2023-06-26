@@ -15,4 +15,5 @@ spring:
 
   application:
     microservice-parser:
+      name: WHO_WINS_PARSER
       url: http://localhost:9090/parse
