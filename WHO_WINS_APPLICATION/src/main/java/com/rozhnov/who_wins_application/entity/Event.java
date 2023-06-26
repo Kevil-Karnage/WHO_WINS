@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "events")
-public class Event {
+public class Event implements Serializable {
     @Id
     private Long id;
 

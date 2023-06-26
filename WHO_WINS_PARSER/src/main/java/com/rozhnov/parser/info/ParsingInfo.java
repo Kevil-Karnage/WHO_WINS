@@ -1,6 +1,6 @@
 package com.rozhnov.parser.info;
 
-import com.rozhnov.who_wins_application.entity.Match;
+import com.rozhnov.who_wins_parser.entity.Match;
 import lombok.Getter;
 
 import java.util.ArrayList;

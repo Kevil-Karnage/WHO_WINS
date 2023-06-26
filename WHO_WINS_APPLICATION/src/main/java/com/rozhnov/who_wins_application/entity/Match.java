@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "matches")
-public class Match {
+public class Match implements Serializable {
     @Id
     private Long id;
 
@@ -36,7 +37,6 @@ public class Match {
 
     private int hltvPos2;
 
-    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "match_id")
     private List<Map> maps;

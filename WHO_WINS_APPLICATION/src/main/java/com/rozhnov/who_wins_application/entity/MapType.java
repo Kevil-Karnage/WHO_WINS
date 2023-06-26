@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class MapType {
+public class MapType implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
