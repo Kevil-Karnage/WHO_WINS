@@ -9,13 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Player {
+public class Player implements Serializable {
     @Id
     private Long id;
 

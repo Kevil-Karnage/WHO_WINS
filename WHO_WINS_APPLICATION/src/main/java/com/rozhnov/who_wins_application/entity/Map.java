@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
-public class Map {
+public class Map implements Serializable {
 
     @Id
     Long id;
@@ -20,6 +21,7 @@ public class Map {
     int score1;
     int score2;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Match match;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,12 +34,10 @@ public class Map {
     private double points21; // очки 2 команды за 1 половину
     private double points22; // очки 2 команды за 2 половину
 
-    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "map_id")
     List<PlayerStats> playerStats1;
 
-    @JsonIgnore
     @OneToMany
     @JoinColumn(name = "map_id")
     List<PlayerStats> playerStats2;
