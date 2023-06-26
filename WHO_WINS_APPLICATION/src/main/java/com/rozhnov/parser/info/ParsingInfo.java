@@ -1,24 +1,25 @@
 package com.rozhnov.parser.info;
 
+import com.rozhnov.who_wins_application.entity.Match;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ParsingInfo<T> {
+public class ParsingInfo {
     public int found;
     public int parsed;
     private List<FailedParsing> failed;
     public int alreadyAdded;
-    private List<T> result;
+    private List<Match> result;
 
     public ParsingInfo() {
         result = new ArrayList<>();
         failed = new ArrayList<>();
     }
 
-    public void add(T element) {
+    public void add(Match element) {
         result.add(element);
     }
 

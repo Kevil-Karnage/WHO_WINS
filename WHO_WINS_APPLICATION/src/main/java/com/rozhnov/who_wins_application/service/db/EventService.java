@@ -1,4 +1,4 @@
-package com.rozhnov.who_wins_application.service;
+package com.rozhnov.who_wins_application.service.db;
 
 import com.rozhnov.who_wins_application.entity.Event;
 import com.rozhnov.who_wins_application.repository.EventRepository;

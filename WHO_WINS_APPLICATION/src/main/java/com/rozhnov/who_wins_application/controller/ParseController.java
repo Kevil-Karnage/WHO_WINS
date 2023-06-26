@@ -1,12 +1,12 @@
 package com.rozhnov.who_wins_application.controller;
 
 import com.rozhnov.who_wins_application.entity.*;
-import com.rozhnov.who_wins_application.service.*;
+import com.rozhnov.who_wins_application.service.connection.ParseService;
+import com.rozhnov.who_wins_application.service.db.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.rozhnov.parser.DataParsing;
 import com.rozhnov.parser.info.ParsingInfo;
 
 import java.util.List;
@@ -14,8 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/parse")
 public class ParseController {
-
-    DataParsing dataParsing;
 
     EventService eventService;
     MatchService matchService;
@@ -25,11 +23,13 @@ public class ParseController {
     PlayerStatsService playerStatsService;
     PlayerService playerService;
 
+    ParseService parseService;
+
     @Autowired
     public ParseController(EventService eventService, MatchService matchService,
                           TeamService teamService, MapService mapService,
                           MapTypeService mapTypeService, PlayerStatsService playerStatsService,
-                          PlayerService playerService) {
+                          PlayerService playerService, ParseService parseService) {
         this.eventService = eventService;
         this.matchService = matchService;
         this.teamService = teamService;
@@ -38,19 +38,18 @@ public class ParseController {
         this.playerStatsService = playerStatsService;
         this.playerService = playerService;
 
-        this.dataParsing = new DataParsing();
+        this.parseService = parseService;
     }
 
     @GetMapping("/results/{count}")
-    public ResponseEntity<ParsingInfo<Match>> fillDB(@PathVariable int count) {
-        ParsingInfo<Match> parsing = dataParsing.parseResults(count);
+    public ResponseEntity<ParsingInfo> fillDB(@PathVariable int count) {
+        ParsingInfo parsing = parseService.parseResults(count);
 
-        saveAll(parsing.getResult());
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
-    
+    /*
     @GetMapping("/results/{from}/{to}")
-    public ResponseEntity<ParsingInfo<Match>> addResults(@PathVariable int from, @PathVariable int to) {
+    public ResponseEntity<ParsingInfo> addResults(@PathVariable int from, @PathVariable int to) {
         try {
             ParsingInfo<Match> parsing = dataParsing.parseResultsOf(from, to);
             saveAll(parsing.getResult());
@@ -85,6 +84,7 @@ public class ParseController {
         ParsingInfo<Match> parsing = dataParsing.parseTodayMatches();
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
+*/
 
     private void saveAll(List<Match> matchList) {
         for (Match match : matchList) {
