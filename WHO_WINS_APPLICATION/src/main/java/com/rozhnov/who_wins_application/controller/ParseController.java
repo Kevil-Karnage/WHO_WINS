@@ -65,20 +65,22 @@ public class ParseController {
         }
 
     }
-/*
+
     @GetMapping("/results/today")
-    public ResponseEntity<ParsingInfo<Match>> addTodayResults() {
-        ParsingInfo<Match> parsing = dataParsing.parseTodayResults();
+    public ResponseEntity<ParsingInfo> addTodayResults() {
+        ParsingInfo parsing = parseService.parseResultsByToday();
         saveAll(parsing.getResult());
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
     @GetMapping("/results/yesterday")
-    public ResponseEntity<ParsingInfo<Match>> addYesterdayResults() {
-        ParsingInfo<Match> parsing = dataParsing.parseYesterdayResults();
+    public ResponseEntity<ParsingInfo> addYesterdayResults() {
+        ParsingInfo parsing = parseService.parseResultsByYesterday();
+        saveAll(parsing.getResult());
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
+/*
     @GetMapping("/results/")
     public ResponseEntity<ParsingInfo<Match>> checkUpdates() {
         dataParsing.checkResultsUpdates();
