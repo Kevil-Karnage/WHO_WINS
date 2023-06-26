@@ -52,19 +52,19 @@ public class ParseController {
             return ResponseEntity.badRequest().body(null);
         }
     }
-/*
+
     @GetMapping("/results/today")
-    public ResponseEntity<ParsingInfo<Match>> addTodayResults() {
-        ParsingInfo<Match> parsing = dataParsing.parseTodayResults();
+    public ResponseEntity<ParsingInfo> addTodayResults() {
+        ParsingInfo parsing = dataParsing.parseTodayResults();
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
     @GetMapping("/results/yesterday")
-    public ResponseEntity<ParsingInfo<Match>> addYesterdayResults() {
-        ParsingInfo<Match> parsing = dataParsing.parseYesterdayResults();
+    public ResponseEntity<ParsingInfo> addYesterdayResults() {
+        ParsingInfo parsing = dataParsing.parseYesterdayResults();
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
-
+/*
     @GetMapping("/results/")
     public ResponseEntity<ParsingInfo<Match>> checkUpdates() {
         dataParsing.checkResultsUpdates();

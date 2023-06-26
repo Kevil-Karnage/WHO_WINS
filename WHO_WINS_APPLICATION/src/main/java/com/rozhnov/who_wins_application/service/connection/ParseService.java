@@ -2,7 +2,6 @@ package com.rozhnov.who_wins_application.service.connection;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rozhnov.parser.info.ParsingInfo;
-import com.rozhnov.who_wins_application.entity.Match;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,6 @@ public class ParseService {
     private String parserBaseUrl;
 
     private final String PARSER_RESULTS_URL = "/results";
-
 
     public ParsingInfo parseResults(int count) {
         String url = parserBaseUrl + PARSER_RESULTS_URL + '/' + count;
@@ -108,8 +106,96 @@ public class ParseService {
 
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    String.format("For Results from %d to %: Parser Microservice Response: %s", from, to, e.getMessage())
+                    String.format("For Results from %d to %d: Parser Microservice Response: %s", from, to, e.getMessage())
             );
         }
+    }
+
+    public ParsingInfo parseResultsByToday() {
+        String url = parserBaseUrl + PARSER_RESULTS_URL + "/today";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        log.info("Parser Request URL: {}", url);
+
+        try {
+            HttpEntity<Object> request = new HttpEntity<>(headers);
+            ResponseEntity<ParsingInfo> responseEntity =
+                    restTemplate.getForEntity(url, ParsingInfo.class, request);
+            if (responseEntity.getStatusCode().isError()) {
+                log.error(
+                        "For Results by today: error response: {} is received to parse Results in Parser Microservice",
+                        responseEntity.getStatusCode()
+                );
+
+                throw new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        String.format(
+                                "For Results by today: Parser Microservice Message: %s",
+                                responseEntity.getStatusCode().value()
+                        )
+                );
+            }
+
+            if (responseEntity.hasBody() && responseEntity.getBody() == null) {
+                log.error("ParsingInfo From Response: {}", responseEntity.getBody());
+            }
+
+            return responseEntity.getBody();
+        } catch (Exception e) {
+            log.error(
+                    "For Results by today: cannot parse in Results Microservice for reason: {}", e.getMessage()
+            );
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    String.format("For Results by today: Parser Microservice Response: %s", e.getMessage())
+            );
+        }
+
+    }
+
+    public ParsingInfo parseResultsByYesterday() {
+        String url = parserBaseUrl + PARSER_RESULTS_URL + "/yesterday";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        log.info("Parser Request URL: {}", url);
+
+        try {
+            HttpEntity<Object> request = new HttpEntity<>(headers);
+            ResponseEntity<ParsingInfo> responseEntity =
+                    restTemplate.getForEntity(url, ParsingInfo.class, request);
+            if (responseEntity.getStatusCode().isError()) {
+                log.error(
+                        "For Results by yesterday: error response: {} is received to parse Results in Parser Microservice",
+                        responseEntity.getStatusCode()
+                );
+
+                throw new ResponseStatusException(
+                        HttpStatus.INTERNAL_SERVER_ERROR,
+                        String.format(
+                                "For Results by yesterday: Parser Microservice Message: %s",
+                                responseEntity.getStatusCode().value()
+                        )
+                );
+            }
+
+            if (responseEntity.hasBody() && responseEntity.getBody() == null) {
+                log.error("ParsingInfo From Response: {}", responseEntity.getBody());
+            }
+
+            return responseEntity.getBody();
+        } catch (Exception e) {
+            log.error(
+                    "For Results by yesterday: cannot parse in Results Microservice for reason: {}", e.getMessage()
+            );
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    String.format("For Results by yesterday: Parser Microservice Response: %s", e.getMessage())
+            );
+        }
+
     }
 }
