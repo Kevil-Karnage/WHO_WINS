@@ -43,15 +43,21 @@ public class ParseController {
 
     @GetMapping("/results/{count}")
     public ResponseEntity<ParsingInfo> fillDB(@PathVariable int count) {
-        ParsingInfo parsing = parseService.parseResults(count);
+        try {
+            ParsingInfo parsing = parseService.parseResults(count);
 
-        return new ResponseEntity<>(parsing, HttpStatus.OK);
+            saveAll(parsing.getResult());
+
+            return new ResponseEntity<>(parsing, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
-    /*
+
     @GetMapping("/results/{from}/{to}")
     public ResponseEntity<ParsingInfo> addResults(@PathVariable int from, @PathVariable int to) {
         try {
-            ParsingInfo<Match> parsing = dataParsing.parseResultsOf(from, to);
+            ParsingInfo parsing = parseService.parseResultsOf(from, to);
             saveAll(parsing.getResult());
             return new ResponseEntity<>(parsing, HttpStatus.OK);
         } catch (Exception e) {
@@ -59,7 +65,7 @@ public class ParseController {
         }
 
     }
-
+/*
     @GetMapping("/results/today")
     public ResponseEntity<ParsingInfo<Match>> addTodayResults() {
         ParsingInfo<Match> parsing = dataParsing.parseTodayResults();

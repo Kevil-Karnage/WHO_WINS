@@ -7,8 +7,8 @@
 
 #### Обновлено:
 
--
-
+- Сбор информации с сайта [hltv.org](https://hltv.org) перенесён в отдельный микросервис WHO_WINS_PARSER (**DEVELOP-12**, **DEVELOP-13**) 
+- Основной API приложения перенесён в микросервис WHO_WINS_APPLICATION (**DEVELOP-11**)
 #### Исправлено:
 
 - Неправильные границы запроса GET /parse/results/{from}/{to} (**FIX-9**)
