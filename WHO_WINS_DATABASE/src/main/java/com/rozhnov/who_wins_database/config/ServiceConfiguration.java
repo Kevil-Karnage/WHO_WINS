@@ -1,18 +1,11 @@
-package com.rozhnov.who_wins_application.config;
+package com.rozhnov.who_wins_database.config;
 
-import com.rozhnov.who_wins_application.service.connection.ParseService;
-import com.rozhnov.who_wins_application.service.db.*;
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import com.rozhnov.who_wins_database.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 
 @Configuration
-public class ApplicationConfiguration {
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
+public class ServiceConfiguration {
 
     @Bean
     MatchService initMatchService() {
@@ -47,10 +40,5 @@ public class ApplicationConfiguration {
     @Bean
     PlayerStatsService initPlayerStatsService() {
         return new PlayerStatsService();
-    }
-
-    @Bean
-    ParseService initParseService() {
-        return new ParseService();
     }
 }

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.rozhnov.parser</groupId>
     <artifactId>WHO_WINS_PARSER</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>WHO_WINS_PARSER</name>
     <description>WHO_WINS_PARSER</description>
     <properties>

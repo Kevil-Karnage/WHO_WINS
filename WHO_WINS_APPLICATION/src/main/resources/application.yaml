@@ -14,6 +14,15 @@ spring:
       ddl-auto: update
 
   application:
-    microservice-parser:
-      name: WHO_WINS_PARSER
-      url: http://localhost:9090/parse
+    microservice:
+      parser:
+        name: WHO_WINS_PARSER
+        url: http://localhost:9090/parse
+      database:
+        name: WHO_WINS_DATABASE
+        url: http://localhost:8585
+
+kafka:
+  server: http://localhost:9092
+  producer:
+    id: from_main_to_parser
