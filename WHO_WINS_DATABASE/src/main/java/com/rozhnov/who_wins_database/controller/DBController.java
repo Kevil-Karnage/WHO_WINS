@@ -36,9 +36,11 @@ public class DBController {
     }
 
 
-    @PostMapping("/all")
-    public void saveAll(@RequestBody List<Match> matches) {
-        for (Match match : matches) {
+    @RequestMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void saveAll(@RequestBody ParsingInfo parsingInfo) {
+
+        System.out.println(parsingInfo);
+        for (Match match : parsingInfo.getResult()) {
             Event event = match.getEvent();
             System.out.println("Сохраняется ивент: " + event);
             eventService.save(event);
@@ -62,7 +64,7 @@ public class DBController {
                 }
             }
         }
-        matchService.saveAll(matches);
+        matchService.saveAll(parsingInfo.getResult());
     }
 
     private void savePlayers(List<PlayerStats> playerStatsList) {

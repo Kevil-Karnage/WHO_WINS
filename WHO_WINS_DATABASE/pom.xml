@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.rozhnov</groupId>
     <artifactId>WHO_WINS_DATABASE</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0</version>
     <name>WHO_WINS_DATABASE</name>
     <description>WHO_WINS_DATABASE</description>
     <properties>

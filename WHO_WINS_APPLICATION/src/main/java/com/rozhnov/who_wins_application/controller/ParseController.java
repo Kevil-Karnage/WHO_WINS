@@ -26,6 +26,7 @@ public class ParseController {
     PlayerStatsService playerStatsService;
     PlayerService playerService;
 
+
     ParseService parseService;
     DatabaseService databaseService;
 
@@ -68,7 +69,7 @@ public class ParseController {
     @GetMapping("/results/{from}/{to}")
     public ResponseEntity<ParsingInfo> addResults(@PathVariable int from, @PathVariable int to) {
         try {
-            ParsingInfo parsing = parseService.parseResultsOf(from, to);
+            ParsingInfo parsing = parseService.parseResultsOf(producer, from, to);
             saveAll(parsing.getResult());
             return new ResponseEntity<>(parsing, HttpStatus.OK);
         } catch (Exception e) {
@@ -79,14 +80,14 @@ public class ParseController {
 
     @GetMapping("/results/today")
     public ResponseEntity<ParsingInfo> addTodayResults() {
-        ParsingInfo parsing = parseService.parseResultsByToday();
+        ParsingInfo parsing = parseService.parseResultsByToday(producer);
         saveAll(parsing.getResult());
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
 
     @GetMapping("/results/yesterday")
     public ResponseEntity<ParsingInfo> addYesterdayResults() {
-        ParsingInfo parsing = parseService.parseResultsByYesterday();
+        ParsingInfo parsing = parseService.parseResultsByYesterday(producer);
         saveAll(parsing.getResult());
         return new ResponseEntity<>(parsing, HttpStatus.OK);
     }
