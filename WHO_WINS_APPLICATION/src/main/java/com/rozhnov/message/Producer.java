@@ -1,4 +1,4 @@
-package com.rozhnov.messages;
+package com.rozhnov.message;
 
 import com.rozhnov.parser.info.ParsingInfo;
 import lombok.extern.slf4j.Slf4j;
