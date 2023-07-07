@@ -1,4 +1,4 @@
-package com.rozhnov.who_wins_database.service;
+package com.rozhnov.who_wins_database.service.db;
 
 import com.rozhnov.who_wins_database.entity.Match;
 import com.rozhnov.who_wins_database.repository.MatchRepository;
