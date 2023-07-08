@@ -31,13 +31,4 @@ public class KafkaConsumerService {
         ResponseEntity<ParsingInfo> response = restTemplate.getForEntity(message, ParsingInfo.class, request);
         System.out.println(response);
     }
-
-    @KafkaListener(topics = "${kafka.consumer.topic}")
-    public void listenWithHeaders(
-            @Payload String message,
-            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
-        System.out.println(
-                "Received Message: " + message +
-                        "from partition: " + partition);
-    }
 }

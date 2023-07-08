@@ -19,7 +19,7 @@ public class KafkaConsumerService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @KafkaListener(topics = "${kafka.consumer.group-id}", groupId = "${kafka.consumer.group-id}")
+    @KafkaListener(topics = "${kafka.consumer.topic}", groupId = "${kafka.consumer.group-id}")
     public void listenGroupToParser(ParsingInfo message) {
         System.out.println("Received Message in group to_parser: " + message);
 
@@ -30,16 +30,7 @@ public class KafkaConsumerService {
         HttpEntity<ParsingInfo> request = new HttpEntity<>(message, headers);
 
         ResponseEntity<ParsingInfo> result = restTemplate.exchange(url, HttpMethod.POST, request, ParsingInfo.class);
-
     }
 
-    @KafkaListener(topics = "${kafka.consumer.group-id}")
-    public void listenWithHeaders(
-            @Payload String message,
-            @Header(KafkaHeaders.RECEIVED_PARTITION) int partition) {
-        System.out.println(
-                "Received Message: " + message +
-                        "from partition: " + partition);
-    }
 }
 

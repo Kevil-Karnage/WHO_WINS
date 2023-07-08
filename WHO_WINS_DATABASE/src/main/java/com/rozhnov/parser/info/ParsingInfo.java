@@ -17,6 +17,10 @@ public class ParsingInfo {
     public int alreadyAdded;
     private List<Match> result;
 
+    public ParsingInfo() {
+        result = new ArrayList<>();
+        failed = new ArrayList<>();
+    }
     public void add(Match element) {
         result.add(element);
     }

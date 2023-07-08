@@ -18,9 +18,4 @@ public class ServiceConfiguration {
     public ParseService initParseService() {
         return new ParseService();
     }
-
-    @Bean
-    DatabaseService initDatabaseService() {
-        return new DatabaseService();
-    }
 }

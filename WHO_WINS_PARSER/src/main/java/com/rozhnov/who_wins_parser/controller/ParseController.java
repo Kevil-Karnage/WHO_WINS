@@ -2,7 +2,9 @@ package com.rozhnov.who_wins_parser.controller;
 
 import com.rozhnov.parser.DataParsing;
 import com.rozhnov.parser.info.ParsingInfo;
+import com.rozhnov.who_wins_parser.service.DatabaseService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/parse")
 public class ParseController {
     DataParsing dataParsing;
+
+    @Autowired
+    DatabaseService databaseService;
 
     public ParseController() {
         this.dataParsing = new DataParsing();
@@ -29,6 +34,7 @@ public class ParseController {
         }
 
         ParsingInfo parsing = dataParsing.parseResults(count);
+        databaseService.saveAll(parsing);
         return ResponseEntity.ok(parsing);
     }
 
@@ -37,6 +43,7 @@ public class ParseController {
         log.debug("GET request to parse results from " + from + " to " + to);
         try {
             ParsingInfo parsing = dataParsing.parseResultsOf(from, to);
+            databaseService.saveAll(parsing);
             return ResponseEntity.ok(parsing);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
@@ -46,15 +53,25 @@ public class ParseController {
     @GetMapping("/results/today")
     public ResponseEntity<ParsingInfo> addTodayResults() {
         log.debug("GET request to parse today results");
-        ParsingInfo parsing = dataParsing.parseTodayResults();
-        return ResponseEntity.ok(parsing);
+        try {
+            ParsingInfo parsing = dataParsing.parseTodayResults();
+            databaseService.saveAll(parsing);
+            return ResponseEntity.ok(parsing);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/results/yesterday")
     public ResponseEntity<ParsingInfo> addYesterdayResults() {
         log.debug("GET request to parse yesterday results");
-        ParsingInfo parsing = dataParsing.parseYesterdayResults();
-        return ResponseEntity.ok(parsing);
+        try {
+            ParsingInfo parsing = dataParsing.parseYesterdayResults();
+            databaseService.saveAll(parsing);
+            return ResponseEntity.ok(parsing);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 /*
     @GetMapping("/results/")

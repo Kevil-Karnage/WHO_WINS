@@ -14,6 +14,7 @@ spring:
       ddl-auto: update
 
 kafka:
+  server: http://localhost:9092
   consumer:
     topic: from_parser_to_database
     group-id: "${kafka.consumer.topic}"
