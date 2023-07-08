@@ -1,12 +1,14 @@
-package com.rozhnov;
+package com.rozhnov.parser.info;
 
 import com.rozhnov.who_wins_database.entity.Match;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public class ParsingInfo {
     public int found;
     public int parsed;

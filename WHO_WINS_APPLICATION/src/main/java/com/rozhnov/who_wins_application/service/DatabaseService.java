@@ -1,6 +1,6 @@
 package com.rozhnov.who_wins_application.service;
 
-import com.rozhnov.messages.Producer;
+import com.rozhnov.message.Producer;
 import com.rozhnov.parser.info.ParsingInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

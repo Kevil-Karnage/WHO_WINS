@@ -1,7 +1,7 @@
-package com.rozhnov.who_wins_application.service.db;
+package com.rozhnov.who_wins_database.service.db;
 
-import com.rozhnov.who_wins_application.entity.Match;
-import com.rozhnov.who_wins_application.repository.MatchRepository;
+import com.rozhnov.who_wins_database.entity.Match;
+import com.rozhnov.who_wins_database.repository.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
