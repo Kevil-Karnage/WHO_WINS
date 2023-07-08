@@ -1,6 +1,6 @@
 package com.rozhnov.who_wins_database.config;
 
-import com.rozhnov.who_wins_database.service.*;
+import com.rozhnov.who_wins_database.service.db.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
