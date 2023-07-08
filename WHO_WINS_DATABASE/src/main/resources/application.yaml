@@ -12,3 +12,8 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: update
+
+kafka:
+  consumer:
+    topic: from_parser_to_database
+    group-id: "${kafka.consumer.topic}"

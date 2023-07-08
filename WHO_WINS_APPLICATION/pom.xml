@@ -31,6 +31,13 @@
             <version>3.1.0</version>
         </dependency>
 
+        <!-- Microservices -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,7 +45,6 @@
             <scope>test</scope>
             <version>3.1.0</version>
         </dependency>
-
 
         <!-- Other -->
         <dependency>

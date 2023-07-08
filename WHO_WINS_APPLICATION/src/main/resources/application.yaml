@@ -14,4 +14,5 @@ spring:
 kafka:
   server: http://localhost:9092
   producer:
-    id: from_main_to_parser
+    topic: from_main_to_parser
+    group-id: ${kafka.producer.topic}

@@ -3,5 +3,9 @@ server:
 
 kafka:
   server: http://localhost:9092
-  group:
-    id: from_main_to_parser
+  producer:
+    topic: from_parser_to_database
+    group-id: ${kafka.producer.topic}
+  consumer:
+    topic: from_main_to_parser
+    group-id: ${kafka.consumer.topic}
