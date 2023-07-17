@@ -1,7 +1,5 @@
 package com.rozhnov.who_wins_application.controller;
 
-import com.rozhnov.message.Producer;
-import com.rozhnov.who_wins_application.service.DatabaseService;
 import com.rozhnov.who_wins_application.service.ParseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,56 +13,51 @@ import org.springframework.web.client.RestTemplate;
 public class ParseController {
 
     ParseService parseService;
-    DatabaseService databaseService;
 
-
-    Producer producer;
 
     @Autowired
-    public ParseController(ParseService parseService, DatabaseService databaseService,
-                           RestTemplate restTemplate) {
+    public ParseController(ParseService parseService) {
         this.parseService = parseService;
-        this.databaseService = databaseService;
-
-        this.producer = new Producer(restTemplate);
     }
 
     @GetMapping("/results/{count}")
     public ResponseEntity<ParsingInfo> fillDB(@PathVariable int count) {
         try {
-            ParsingInfo parsing = parseService.parseResults(producer, count);
-            parsing = databaseService.saveResults(producer, parsing);
-
-            return new ResponseEntity<>(parsing, HttpStatus.OK);
+            parseService.parseResults(count);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/results/{from}/{to}")
     public ResponseEntity<ParsingInfo> addResults(@PathVariable int from, @PathVariable int to) {
         try {
-            ParsingInfo parsing = parseService.parseResultsOf(producer, from, to);
-            databaseService.saveResults(producer, parsing);
-            return new ResponseEntity<>(parsing, HttpStatus.OK);
+            parseService.parseResultsOf(from, to);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @GetMapping("/results/today")
     public ResponseEntity<ParsingInfo> addTodayResults() {
-        ParsingInfo parsing = parseService.parseResultsByToday(producer);
-        databaseService.saveResults(producer, parsing);
-        return new ResponseEntity<>(parsing, HttpStatus.OK);
+        try {
+            parseService.parseResultsByToday();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/results/yesterday")
     public ResponseEntity<ParsingInfo> addYesterdayResults() {
-        ParsingInfo parsing = parseService.parseResultsByYesterday(producer);
-        databaseService.saveResults(producer, parsing);
-        return new ResponseEntity<>(parsing, HttpStatus.OK);
+        try {
+            parseService.parseResultsByYesterday();
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 /*

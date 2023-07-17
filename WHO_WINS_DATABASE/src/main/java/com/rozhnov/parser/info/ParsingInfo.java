@@ -1,5 +1,6 @@
 package com.rozhnov.parser.info;
 
+import com.rozhnov.FailedParsing;
 import com.rozhnov.who_wins_database.entity.Match;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,13 +21,8 @@ public class ParsingInfo {
         result = new ArrayList<>();
         failed = new ArrayList<>();
     }
-
     public void add(Match element) {
         result.add(element);
-    }
-
-    public void addFail(Long id, String description) {
-        failed.add(new FailedParsing(id, description));
     }
 
     @Override

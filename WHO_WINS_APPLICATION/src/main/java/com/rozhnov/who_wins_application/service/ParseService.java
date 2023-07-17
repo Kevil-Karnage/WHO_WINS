@@ -1,12 +1,9 @@
 package com.rozhnov.who_wins_application.service;
 
-import com.rozhnov.message.Producer;
-import com.rozhnov.parser.info.ParsingInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Slf4j
 @Service
@@ -15,26 +12,29 @@ public class ParseService {
     @Value("${spring.application.microservice.parser.url}")
     private String parserBaseUrl;
 
+    @Autowired
+    private KafkaProducerService kafkaProducerService;
+
     private final String PARSER_RESULTS_URL = "/results";
     private final String PARSER_MATCHES_URL = "/matches";
 
-    public ParsingInfo parseResults(Producer producer, int count) {
+    public void parseResults(int count) {
         String url = parserBaseUrl + PARSER_RESULTS_URL + '/' + count;
-        return producer.sendParserRequest(url, "RESULTS_COUNT");
+        kafkaProducerService.sendMessage(url);
     }
 
-    public ParsingInfo parseResultsOf(Producer producer, int from, int to) {
+    public void parseResultsOf(int from, int to) {
         String url = parserBaseUrl + PARSER_RESULTS_URL + '/' + from + '/' + to;
-        return producer.sendParserRequest(url, "RESULTS_FROM_TO");
+        kafkaProducerService.sendMessage(url);
     }
 
-    public ParsingInfo parseResultsByToday(Producer producer) {
+    public void parseResultsByToday() {
         String url = parserBaseUrl + PARSER_RESULTS_URL + "/today";
-        return producer.sendParserRequest(url, "RESULTS_TODAY");
+        kafkaProducerService.sendMessage(url);
     }
 
-    public ParsingInfo parseResultsByYesterday(Producer producer) {
+    public void parseResultsByYesterday() {
         String url = parserBaseUrl + PARSER_RESULTS_URL + "/yesterday";
-        return producer.sendParserRequest(url, "RESULTS_YESTERDAY");
+        kafkaProducerService.sendMessage(url);
     }
 }

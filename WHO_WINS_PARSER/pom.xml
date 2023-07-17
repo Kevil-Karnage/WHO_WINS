@@ -41,6 +41,12 @@
             <version>3.0.4</version>
         </dependency>
 
+        <!-- Microservices -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>3.0.4</version>
+        </dependency>
 
         <!-- Test -->
         <dependency>

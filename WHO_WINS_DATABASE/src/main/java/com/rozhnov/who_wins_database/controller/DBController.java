@@ -1,8 +1,8 @@
 package com.rozhnov.who_wins_database.controller;
 
-import com.rozhnov.ParsingInfo;
+import com.rozhnov.parser.info.ParsingInfo;
 import com.rozhnov.who_wins_database.entity.*;
-import com.rozhnov.who_wins_database.service.*;
+import com.rozhnov.who_wins_database.service.db.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

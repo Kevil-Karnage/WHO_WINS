@@ -37,7 +37,7 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- Kafka -->
+        <!-- Microservice -->
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
@@ -62,7 +62,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!--Other -->
+        <!-- Other -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
