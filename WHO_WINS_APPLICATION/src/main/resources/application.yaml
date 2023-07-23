@@ -1,0 +1,18 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    microservice:
+      parser:
+        name: WHO_WINS_PARSER
+        url: http://localhost:9090/parse
+      database:
+        name: WHO_WINS_DATABASE
+        url: http://localhost:8585
+
+kafka:
+  server: http://localhost:9092
+  producer:
+    topic: from_main_to_parser
+    group-id: ${kafka.producer.topic}
