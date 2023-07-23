@@ -5,8 +5,10 @@
  ---
 ## Используемый стек:
  - Java 17 (должен работать и на более старых версиях)
- - Spring Boot 3.1.0
- - Spring Kafka 3.0.4
+ - Spring:
+ - - Boot 3.1.0
+ - - Data JPA (для микросервиса WHO_WINS_DATABASE)
+ - - Kafka 3.0.4
  - Lombok 1.18.26
  - JSoup 1.15.4 (для микросервиса WHO_WINS_PARSER)
  - Selenium 4.6.0 (для микросервиса WHO_WINS_PARSER)
@@ -85,14 +87,66 @@
 ## API микросервисов
 
 ### WHO_WINS_APPLICATION
+Основной API. Обрабатывает запросы с фронта 
 
-_GET /parse/results/{count}_
+#### Получение и сохранение результатов матчей в количестве {count}, начиная с последнего
 
-_GET /parse/results/{from}/{to}_
+    GET /parse/results/{count}
 
-_GET /parse/results/today_
+#### Получение и сохранение результатов матчей под номерами от {from} до {to}, начиная с последнего 
 
-_GET /parse/results/yesterday_
+    GET /parse/results/{from}/{to}
 
+#### Получение и сохранение результатов матчей за последний день, начиная с последнего
 
-# Файл README.md не закончен, позже будет собрана полная версия
+    GET /parse/results/today
+
+#### Получение и сохранение результатов матчей за предпоследний день, начиная с последнего
+
+    GET /parse/results/yesterday
+
+### WHO_WINS_DATABASE
+API для работы с базой данных
+
+#### Сохранение списка матчей
+
+    POST /save/all
+
+Тело запроса:
+
+    ParsingInfo {
+        found: <int count>,
+        parsed: <int count>,
+        failed: [   
+                    FailedParsing, FailedParsing, FailedParsing, ...
+                ]
+        alreadyAdded: <int count>,
+        result: [
+                    Match, Match, Match, ...
+                ]
+    '}'
+    
+
+### WHO_WINS_PARSER
+
+#### Получение и сохранение результатов матчей в количестве {count}, начиная с последнего
+Сначала получает данные с hltv.org, затем отправляет их на WHO_WINS_DATABASE для сохранения 
+
+    GET /parse/results/{count}
+
+#### Получение и сохранение результатов матчей под номерами от {from} до {to}, начиная с последнего
+Сначала получает данные с hltv.org, затем отправляет их на WHO_WINS_DATABASE для сохранения
+
+    GET /parse/results/{from}/{to}
+
+#### Получение и сохранение результатов матчей за последний день, начиная с последнего
+Сначала получает данные с hltv.org, затем отправляет их на WHO_WINS_DATABASE для сохранения
+
+    GET /parse/results/today
+
+#### Получение и сохранение результатов матчей за предпоследний день, начиная с последнего
+Сначала получает данные с hltv.org, затем отправляет их на WHO_WINS_DATABASE для сохранения
+
+    GET /parse/results/yesterday
+
+---
