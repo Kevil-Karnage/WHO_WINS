@@ -1,4 +1,4 @@
-package com.rozhnov;
+package com.rozhnov.parser.info;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

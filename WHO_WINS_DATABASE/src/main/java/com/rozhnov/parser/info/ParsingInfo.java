@@ -1,6 +1,5 @@
 package com.rozhnov.parser.info;
 
-import com.rozhnov.FailedParsing;
 import com.rozhnov.who_wins_database.entity.Match;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
